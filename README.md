@@ -1,5 +1,7 @@
 <div align="center">
 
+<p align="center"><img src="assets/banner.png" alt="hunyuan2-plus-plus" width="680"></p>
+
 # Hunyuan3D-2 mini + HiCache++
 
 **Tencent's 0.6B image-to-3D, accelerated by training-free *exponential* velocity forecasting.**
@@ -133,8 +135,9 @@ standalone [**`hicache-plus-plus`**](../hicache-plus-plus) library. The Hermite-
 ## Attribution
 
 - **Hunyuan3D-2 / Hunyuan3D-2 mini** © Tencent — see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE)
-  (Tencent Hunyuan Non-Commercial License). This fork adds only the cache integration; the model, weights,
-  and pipeline are unchanged.
+  (Tencent Hunyuan 3D 2.0 Community License Agreement; note its territorial limits, large-user
+  threshold, and no-competing-model-training restrictions). This fork adds only the cache
+  integration; the model, weights, and pipeline are unchanged.
 - **HiCache** — *Training-free Acceleration of Diffusion Models via Hermite Polynomial Feature Forecasting*
   ([arXiv:2508.16984](https://arxiv.org/abs/2508.16984)); the Hermite baseline here is a clean
   reimplementation. Built on **TaylorSeer** (monomial feature caching).
