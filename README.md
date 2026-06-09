@@ -6,7 +6,7 @@
 
 **Tencent's 0.6B image-to-3D, accelerated by training-free *exponential* velocity forecasting.**
 
-*[Hunyuan3D-2 mini](https://huggingface.co/tencent/Hunyuan3D-2mini) with [HiCache++](../hicache-plus-plus)
+*[Hunyuan3D-2 mini](https://huggingface.co/tencent/Hunyuan3D-2mini) with [HiCache++](https://github.com/Archerkattri/hicache-plus-plus)
 wired natively into its flow-matching denoise loop: skip the DiT on most sampling steps and forecast the
 cached velocity with a **Dynamic-Mode-Decomposition (Prony) exponential** basis — exact on the class the
 diffusion features actually live in, so it stays lossless at larger skip intervals than the polynomial.*
@@ -31,7 +31,7 @@ base generator, and the `+` / `++` suffix is a **method choice**, not a rival pr
 | Hunyuan3D-2 mini | `hunyuan2-plus` | `hunyuan2-plus-plus` |
 | SAM 3D Objects | `sam3d-plus` | `sam3d-plus-plus` |
 | Fast-SAM3D | `fastsam3d-plus` | `fastsam3d-plus-plus` |
-| DiT-XL/2 (ImageNet) | `dit-plus` | `dit-plus-plus` |
+| DiT-XL/2 (ImageNet) | `dit-plus` *(unreleased)* | `dit-plus-plus` *(unreleased)* |
 | TRELLIS (v1) | `faster-trellis` | `faster-trellis-plus-plus` |
 | TRELLIS.2-4B (v2) | `hermit-trellis2` | `hermit-trellis2-plus-plus` |
 
@@ -79,7 +79,7 @@ Because exponentials *are* the exact solution class, DMD is **exact on exponenti
 property polynomials lack) and holds quality at skips where Hermite drifts. The window floor is **4 snapshots
 (3 pairs)** — a real-valued trajectory spends two real DOF on every complex pole — and below it HiCache++
 falls back to the Hermite forecast for warm-up. Full math and microbenchmarks are in the standalone
-[**`hicache-plus-plus`**](../hicache-plus-plus) library.
+[**`hicache-plus-plus`**](https://github.com/Archerkattri/hicache-plus-plus) library.
 
 ## Use
 
@@ -130,8 +130,8 @@ where the Hermite (polynomial) baseline decays as the skip grows, DMD degrades g
 with the interval (on Hunyuan3D-2.1, `+0.13` F-score at interval-5, `+0.24` at interval-6).
 
 Full A/B tables (Hunyuan3D-2.1, SAM3D, the controlled forecast microbenchmark) and the math live in the
-standalone [**`hicache-plus-plus`**](../hicache-plus-plus) library. The Hermite-only sibling fork is
-[**`hunyuan2-plus`**](../hunyuan2-plus).
+standalone [**`hicache-plus-plus`**](https://github.com/Archerkattri/hicache-plus-plus) library. The Hermite-only sibling fork is
+[**`hunyuan2-plus`**](https://github.com/Archerkattri/hunyuan2-plus).
 
 ## Attribution
 
@@ -144,7 +144,7 @@ standalone [**`hicache-plus-plus`**](../hicache-plus-plus) library. The Hermite-
   reimplementation. Built on **TaylorSeer** (monomial feature caching).
 - **HiCache++** *(this work)* — the **DMD / Prony exponential** forecaster
   ([`hicache_dmd.py`](hy3dgen/shapegen/hicache_dmd.py), packaged as
-  [`hicache-plus-plus`](../hicache-plus-plus)). DMD (Schmid 2010) / Prony (1795) / Matrix-Pencil
+  [`hicache-plus-plus`](https://github.com/Archerkattri/hicache-plus-plus)). DMD (Schmid 2010) / Prony (1795) / Matrix-Pencil
   (Hua–Sarkar 1990) are classical spectral estimation; their application to diffusion feature caching is, to
   our knowledge, new.
 
@@ -195,3 +195,12 @@ If you use this work, please cite the base model (Tencent Hunyuan3D-2) and the a
 ```bibtex
 @article{schmid2010dmd, title={Dynamic mode decomposition of numerical and experimental data}, author={Schmid, Peter J.}, journal={Journal of Fluid Mechanics}, volume={656}, pages={5--28}, year={2010}}
 ```
+
+---
+
+## Family
+
+Part of the **HiCache++ acceleration family**.
+
+- **Family hub:** [`hicache-plus-plus`](https://github.com/Archerkattri/hicache-plus-plus) — the basis library behind this adapter.
+- **Sibling:** [`hunyuan2-plus`](https://github.com/Archerkattri/hunyuan2-plus) — the same base model with the HiCache (scaled-Hermite) polynomial-forecast variant.
