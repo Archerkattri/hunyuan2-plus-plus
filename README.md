@@ -132,6 +132,24 @@ Full A/B tables (Hunyuan3D-2.1, SAM3D, the controlled forecast microbenchmark) a
 standalone [**`hicache-plus-plus`**](https://github.com/Archerkattri/hicache-plus-plus) library. The Hermite-only sibling fork is
 [**`hunyuan2-plus`**](https://github.com/Archerkattri/hunyuan2-plus).
 
+
+### hicache-pp 1.2.0 alignment (2026-06-10)
+
+Two updates relative to [hicache-plus-plus 1.2.0](https://github.com/Archerkattri/hicache-plus-plus):
+
+- **Hermite comparison arm corrected.** The vendored Hermite forecast in `hicache.py` (the
+  HiCache baseline arm, also the DMD warm-up fallback below the 4-snapshot floor) evaluated
+  the basis at `x = -k`; corrected to `x = +k` (the upstream TaylorSeer distance convention;
+  `-k` flips every odd-order term). The published numbers were measured with the as-released
+  code and remain valid as-measured. Re-validated on the published mini protocol (Toys4K,
+  n = 10, F\@0.05): **DMD i5 with the corrected fallback scores 0.793** (published 0.794,
+  baseline 0.794), still lossless within run noise; the corrected-vs-as-released Hermite
+  tables are in [`hunyuan2-plus`](https://github.com/Archerkattri/hunyuan2-plus#sign-convention-update-2026-06-10).
+- **Eigencache not yet vendored.** hicache-plus-plus 1.2.0 caches the DMD eigendecomposition
+  per compute window; the DMD fit vendored here still refits on every skipped step. That is
+  forecast-side latency overhead only (quality is identical); the standalone library ships
+  the cached fit, and porting it here is pending.
+
 ## Attribution
 
 - **Hunyuan3D-2 / Hunyuan3D-2 mini** © Tencent — see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE)
