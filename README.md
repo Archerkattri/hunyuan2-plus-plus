@@ -27,6 +27,11 @@ diffusion features actually live in, so it stays lossless at larger skip interva
 </div>
 
 ## When to use this repo
+## Architecture at a glance
+
+![hunyuan2-plus-plus architecture](assets/readme_flow.svg)
+
+HiCache++ replaces selected Hunyuan3D-2 mini DiT evaluations with a DMD/Prony forecast fitted to the observed velocity history.
 
 These repos are **complementary accelerators, not competing solutions** — each speeds up a *different*
 base generator, and the `+` / `++` suffix is a **method choice**, not a rival product. Pick by
