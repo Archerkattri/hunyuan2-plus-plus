@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "project": "hunyuan2-plus-plus",
+  "commit": "4b32c6b80f301af8ae53bcc3d18fbd4cb3f342ea",
+  "base_model": "Hunyuan3D-2 mini",
+  "pipeline": "Hunyuan3DDiTFlowMatchingPipeline",
+  "stage": "shape-generation flow-matching denoise loop",
+  "method": "HiCache++ DMD/Prony with Hermite fallback",
+  "cfg_site": "post-CFG-combined velocity",
+  "configuration": {
+    "interval": null,
+    "first_enhance": null,
+    "end_enhance": null,
+    "history": null,
+    "max_order": null,
+    "sigma": null,
+    "num_inference_steps": null,
+    "guidance_scale": null
+  },
+  "acceptance": {
+    "status": "not-run",
+    "checkpoint": null,
+    "input": null,
+    "seed": null,
+    "baseline_latency_ms": null,
+    "cached_latency_ms": null,
+    "speedup": null,
+    "metric": "F-score against uncached mini output",
+    "quality_vs_uncached": null,
+    "reason": "No model weights or GPU inference were run in this bounded packet."
+  },
+  "provenance": {
+    "historical_claims_reused_as_current_validation": false,
+    "notes": "Fill from paired uncached and DMD runs on the same mini checkpoint, input, seed, and schedule."
+  }
+}

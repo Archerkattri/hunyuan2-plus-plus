@@ -123,20 +123,21 @@ pipe.enable_hicache(interval=5, first_enhance=2, backend="dmd", history=5)  # DM
 ```
 
 `enable_dmd` / `enable_hicache` just store the config; `Hunyuan3DDiTFlowMatchingPipeline.__call__` reads it and
-runs the compute/forecast schedule natively — see the exponential forecaster in
+runs the compute/forecast schedule natively — see the central cached-fit exponential forecaster exposed through
 [`hy3dgen/shapegen/hicache_dmd.py`](hy3dgen/shapegen/hicache_dmd.py), the Hermite baseline in
 [`hy3dgen/shapegen/hicache.py`](hy3dgen/shapegen/hicache.py), and the denoise loop in
 [`hy3dgen/shapegen/pipelines.py`](hy3dgen/shapegen/pipelines.py).
 
-## Results
+## Acceptance status
 
-On the **deployed Hunyuan3D-2 mini**, HiCache++ (DMD) is **exactly lossless at interval-5** — F-score **0.794**,
-identical to the uncached baseline **0.794**. The exponential basis is what extends the lossless skip range:
-where the Hermite (polynomial) baseline decays as the skip grows, DMD degrades gracefully and its lead grows
-with the interval (on Hunyuan3D-2.1, `+0.13` F-score at interval-5, `+0.24` at interval-6).
+No current-commit model or GPU A/B was run in this bounded packet. The reproducible
+acceptance fields are recorded in [`benchmarks/hunyuan2-plus-plus.json`](benchmarks/hunyuan2-plus-plus.json),
+with checkpoint, input, seed, latency, and quality fields left null until a paired
+mini-model run fills them. Historical numeric claims are not promoted to current
+validation here.
 
-Full A/B tables (Hunyuan3D-2.1, SAM3D, the controlled forecast microbenchmark) and the math live in the
-standalone [**`hicache-plus-plus`**](https://github.com/Archerkattri/hicache-plus-plus) library. The Hermite-only sibling fork is
+The full method and controlled forecast microbenchmark live in the standalone
+[**`hicache-plus-plus`**](https://github.com/Archerkattri/hicache-plus-plus) library. The Hermite-only sibling fork is
 [**`hunyuan2-plus`**](https://github.com/Archerkattri/hunyuan2-plus).
 
 
@@ -152,10 +153,10 @@ Two updates relative to [hicache-plus-plus 1.2.0](https://github.com/Archerkattr
   n = 10, F\@0.05): **DMD i5 with the corrected fallback scores 0.793** (published 0.794,
   baseline 0.794), still lossless within run noise; the corrected-vs-as-released Hermite
   tables are in [`hunyuan2-plus`](https://github.com/Archerkattri/hunyuan2-plus#sign-convention-update-2026-06-10).
-- **Eigencache not yet vendored.** hicache-plus-plus 1.2.0 caches the DMD eigendecomposition
-  per compute window; the DMD fit vendored here still refits on every skipped step. That is
-  forecast-side latency overhead only (quality is identical); the standalone library ships
-  the cached fit, and porting it here is pending.
+- **Central fit reuse.** The DMD adapter now delegates to `hicache-pp>=1.2.1`, which caches
+  the eigendecomposition once per compute window and reuses it for every skipped horizon.
+  A new compute snapshot invalidates the fit; short or non-uniform history still falls
+  back to the Hermite arm.
 
 ## Attribution
 
@@ -228,3 +229,9 @@ Part of the **HiCache++ acceleration family**.
 
 - **Family hub:** [`hicache-plus-plus`](https://github.com/Archerkattri/hicache-plus-plus) — the basis library behind this adapter.
 - **Sibling:** [`hunyuan2-plus`](https://github.com/Archerkattri/hunyuan2-plus) — the same base model with the HiCache (scaled-Hermite) polynomial-forecast variant.
+
+## Current release status
+
+The current adapter includes shared HiCache++ cache identity, timing and
+fallback accounting. Five CPU contract tests pass. Real Hunyuan3D model/CUDA
+execution and mesh-quality comparisons remain unmeasured.
