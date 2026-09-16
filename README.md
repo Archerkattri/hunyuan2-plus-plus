@@ -26,12 +26,13 @@ diffusion features actually live in, so it stays lossless at larger skip interva
 
 </div>
 
+## Shape-sampler integration
+
+![Hunyuan3D-2 mini HiCache++ integration](assets/readme_flow.svg)
+
+The cache is confined to the shape denoiser. DMD/Prony modes advance skipped-step velocity, while warm-up and failed-fit steps execute the original DiT.
+
 ## When to use this repo
-## Architecture at a glance
-
-![hunyuan2-plus-plus architecture](assets/readme_flow.svg)
-
-HiCache++ replaces selected Hunyuan3D-2 mini DiT evaluations with a DMD/Prony forecast fitted to the observed velocity history.
 
 These repos are **complementary accelerators, not competing solutions** — each speeds up a *different*
 base generator, and the `+` / `++` suffix is a **method choice**, not a rival product. Pick by
